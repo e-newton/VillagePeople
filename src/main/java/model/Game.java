@@ -26,9 +26,9 @@ public class Game {
             System.out.println(window.screenToGraphics((float)Input.getMouseX(),(float)Input.getMouseY()).toString());
             Vector temp = window.screenToGraphics((float)Input.getMouseX(),(float)Input.getMouseY());
             graphics.addDrawable(new QuadDrawing(
-                    new Vector(0.0f+temp.x,(10.0f/window.getHeight()+temp.y)),
-                    new Vector((10.0f/window.getWidth()+temp.x),(10.0f/window.getHeight()+temp.y)),
-                    new Vector((10.0f/window.getWidth()+temp.x),(0.0f+temp.y)),
+                    new Vector(0.0f+temp.x,(25.0f/window.getHeight()+temp.y)),
+                    new Vector((25.0f/window.getWidth()+temp.x),(25.0f/window.getHeight()+temp.y)),
+                    new Vector((25.0f/window.getWidth()+temp.x),(0.0f+temp.y)),
                     new Vector((0.0f+temp.x),(0.0f+temp.y)),
                     Color.BLACK
             ));
