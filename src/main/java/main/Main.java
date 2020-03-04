@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
+
 //The main class that starts our game and contains the game loop.
 public class Main implements Runnable {
     public static final int WIDTH = 512;
@@ -18,8 +19,15 @@ public class Main implements Runnable {
 
     //Creates a new game thread
     public void start() {
-        game = new Thread(this, "game");
-        game.start();
+        if(System.getProperty("os.name").equals("Mac OS X")){
+            run();
+        }
+        else{
+            game = new Thread(this, "game");
+            game.start();
+        }
+
+
     }
 
     //Initializes the window field for our game
