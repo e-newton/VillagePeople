@@ -1,10 +1,16 @@
 package engine;
 
+import graphics.Graphics;
+import graphics.RectangleDrawing;
+import main.Main;
+import math.Vector;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 //The physical window we see on our screens when we run our game
 public class Window {
@@ -19,6 +25,7 @@ public class Window {
     private boolean isResized;
     private boolean isFullScreen;
     private int[] windowPosX = new int[1], windowPosY = new int[1];
+    public Graphics graphics;
 
 
 
@@ -28,6 +35,7 @@ public class Window {
         this.width = width;
         this.height = height;
         this.title = title;
+        this.graphics = new Graphics();
     }
     //Creation of our window
     public void create() {
@@ -41,6 +49,14 @@ public class Window {
             System.err.println("Error creating window");
             return;
         }
+
+        graphics.addDrawable(new RectangleDrawing(
+                new Vector(0.0f/ width,10.0f/height),
+                new Vector(10.0f/ width,10.0f/height),
+                new Vector(10.0f/ width,0.0f/height),
+                new Vector(0.0f/width,0.0f/height),
+                Color.BLACK
+        ));
 
         //Set up window parameters
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_TRUE);
@@ -102,7 +118,12 @@ public class Window {
         }
     }
     public void swapBuffers() {
+        render();
         GLFW.glfwSwapBuffers(window);
+    }
+
+    public void render() {
+        this.graphics.render();
     }
 
     public void setBackgroundColour(float r, float b, float g) {
@@ -162,5 +183,13 @@ public class Window {
         } else {
             GLFW.glfwSetWindowMonitor(window, 0, windowPosX[0],windowPosY[0],width, height, 0);
         }
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

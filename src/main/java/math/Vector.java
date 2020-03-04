@@ -41,6 +41,14 @@ public class Vector {
         this.x = x;
         this.y = y;
     }
+    public float[] getCoordsArray(){
+        return new float[]{x, y};
+    }
+
+
+    public String toString(){
+        return "(" + x + ", "+ y+")";
+    }
 
 
 
