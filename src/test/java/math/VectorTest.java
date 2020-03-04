@@ -28,5 +28,13 @@ public class VectorTest {
     public void addTest(){
         assertEquals(Vector.add(v1,v2), new Vector(1.0f,1.0f));
     }
+    @Test
+    public void magnitudeTest() {
+        assertEquals(v1.magnitude(),1,Vector.DELTA);
+        assertEquals(Vector.add(v1,v2).magnitude(), Math.sqrt(2), Vector.DELTA);
+        v1.add(v2);
+        v1.normalize();
+        assertEquals(v1.magnitude(),1.0f,Vector.DELTA);
+    }
 
 }

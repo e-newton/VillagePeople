@@ -2,7 +2,7 @@ package main;
 
 import engine.Input;
 import engine.Window;
-import graphics.RectangleDrawing;
+import graphics.QuadDrawing;
 import math.Vector;
 import org.lwjgl.glfw.GLFW;
 
@@ -61,38 +61,13 @@ public class Main implements Runnable {
     //Logic Update
     public void update(){
         window.update();
-        if(Input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)){
-            System.out.println(screenToGraphics((float)Input.getMouseX(),(float)Input.getMouseY()).toString());
-            Vector temp = screenToGraphics((float)Input.getMouseX(),(float)Input.getMouseY());
-            window.graphics.addDrawable(new RectangleDrawing(
-                    new Vector(0.0f+temp.x,(10.0f/window.getHeight()+temp.y)),
-                    new Vector((10.0f/window.getWidth()+temp.x),(10.0f/window.getHeight()+temp.y)),
-                    new Vector((10.0f/window.getWidth()+temp.x),(0.0f+temp.y)),
-                    new Vector((0.0f+temp.x),(0.0f+temp.y)),
-                    Color.BLACK
-            ));
-        }
-
-
-
     }
     //Render Update
     public void render() {
         window.swapBuffers();
     }
 
-    public Vector screenToGraphics(float screenX, float screenY){
 
-        screenY /= window.getHeight();
-        screenY *= 2;
-        screenY = -screenY;
-        screenY += 1.0f;
-
-        screenX /= window.getWidth();
-        screenX *= 2;
-        screenX -= 1.0f;
-        return new Vector(screenX,screenY);
-    }
 
 
 

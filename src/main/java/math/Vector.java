@@ -33,6 +33,16 @@ public class Vector {
         this.y += vector.y;
     }
 
+    public void normalize() {
+        float m = magnitude();
+        x /= m;
+        y /= m;
+    }
+
+    public float magnitude(){
+        return (float)Math.sqrt(Math.pow(x,2)+Math.pow(y,2)) ;
+    }
+
     public static float dot(Vector v1, Vector v2){
         return v1.x*v2.x + v1.y*v2.y;
     }

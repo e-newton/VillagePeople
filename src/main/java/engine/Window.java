@@ -1,9 +1,9 @@
 package engine;
 
 import graphics.Graphics;
-import graphics.RectangleDrawing;
-import main.Main;
+import graphics.QuadDrawing;
 import math.Vector;
+import model.Game;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -26,6 +26,7 @@ public class Window {
     private boolean isFullScreen;
     private int[] windowPosX = new int[1], windowPosY = new int[1];
     public Graphics graphics;
+    public Game game;
 
 
 
@@ -36,6 +37,7 @@ public class Window {
         this.height = height;
         this.title = title;
         this.graphics = new Graphics();
+        this.game = new Game(this, graphics);
     }
     //Creation of our window
     public void create() {
@@ -50,13 +52,6 @@ public class Window {
             return;
         }
 
-        graphics.addDrawable(new RectangleDrawing(
-                new Vector(0.0f/ width,10.0f/height),
-                new Vector(10.0f/ width,10.0f/height),
-                new Vector(10.0f/ width,0.0f/height),
-                new Vector(0.0f/width,0.0f/height),
-                Color.BLACK
-        ));
 
         //Set up window parameters
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_TRUE);
@@ -68,6 +63,7 @@ public class Window {
         GLFW.glfwSetWindowPos(window, windowPosX[0], windowPosY[0]);
 
         //Set Input Callbacks
+        createCallbacks();
         GLFW.glfwSetKeyCallback(window,input.getKeyboardCallback());
         GLFW.glfwSetMouseButtonCallback(window, input.getMouseButtonsCallback());
         GLFW.glfwSetCursorPosCallback(window, input.getMouseMoveCallback());
@@ -108,6 +104,9 @@ public class Window {
         GL11.glClearColor(backgroundR, backgroundB, backgroundG, 1.0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         GLFW.glfwPollEvents();
+
+        //Game run for a tick
+        game.run();
 
         //Frames per second
         frames++;
@@ -191,5 +190,18 @@ public class Window {
 
     public int getHeight() {
         return height;
+    }
+
+    public Vector screenToGraphics(float screenX, float screenY){
+
+        screenY /= getHeight();
+        screenY *= 2;
+        screenY = -screenY;
+        screenY += 1.0f;
+
+        screenX /= getWidth();
+        screenX *= 2;
+        screenX -= 1.0f;
+        return new Vector(screenX,screenY);
     }
 }

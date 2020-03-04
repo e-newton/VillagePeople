@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public class RectangleDrawing implements Drawable{
+public class QuadDrawing implements Drawable{
 
     private Vector topLeft;
     private Vector topRight;
@@ -14,7 +14,7 @@ public class RectangleDrawing implements Drawable{
     private Vector botLeft;
     private Color colour;
 
-    public RectangleDrawing(Vector topLeft, Vector topRight, Vector botRight, Vector botLeft, Color colour) {
+    public QuadDrawing(Vector topLeft, Vector topRight, Vector botRight, Vector botLeft, Color colour) {
         this.topLeft = topLeft;
         this.topRight = topRight;
         this.botRight = botRight;
