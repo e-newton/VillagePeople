@@ -1,6 +1,10 @@
 package math;
+
+import java.util.Objects;
+
 //General Vector (2D for now)
 public class Vector {
+    public static final float DELTA = 0.000001f;
     public float x;
     public float y;
 
@@ -45,6 +49,23 @@ public class Vector {
         return new float[]{x, y};
     }
 
+    public boolean isOrthogonal(Vector v) {
+        return (0 - DELTA < dot(v) && dot(v) < 0 + DELTA);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector vector = (Vector) o;
+        return Math.abs(this.x - vector.x) < DELTA &&
+                Math.abs(this.y - vector.y) < DELTA;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 
     public String toString(){
         return "(" + x + ", "+ y+")";
