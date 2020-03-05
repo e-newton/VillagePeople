@@ -1,6 +1,7 @@
 package model.buildings;
 
 import graphics.Graphics;
+import model.Person;
 import model.exceptions.NoTypeAvailabeException;
 import model.exceptions.NotEnoughException;
 import model.resources.Food;
@@ -8,7 +9,7 @@ import model.resources.FoodTypes;
 
 import java.util.HashMap;
 
-public class Granary {
+public class Granary extends Building{
 
     HashMap<FoodTypes, Integer> inventory;
 
@@ -42,8 +43,28 @@ public class Granary {
         return food;
     }
 
+    public HashMap<FoodTypes, Integer> getInventory() {
+        return inventory;
+    }
 
+    public boolean hasFood(){
+        return !inventory.isEmpty();
+    }
 
-
-
+    @Override
+    public void use(Person p) {
+        try {
+            p.addFoodToInventory(removeFood(FoodTypes.APPLE,Person.MAX_INVENTORY));
+        } catch (NotEnoughException e) {
+            try {
+                p.addFoodToInventory(removeFood(FoodTypes.APPLE,inventory.get(FoodTypes.APPLE)));
+            } catch (NotEnoughException ex) {
+                ex.printStackTrace();
+            } catch (NoTypeAvailabeException ex) {
+                ex.printStackTrace();
+            }
+        } catch (NoTypeAvailabeException e) {
+            e.printStackTrace();
+        }
+    }
 }
