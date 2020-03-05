@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.Random;
 
 public class QuadDrawing implements Drawable{
 
@@ -30,20 +31,35 @@ public class QuadDrawing implements Drawable{
 
     }
 
+    public void move(Vector v){
+        topLeft.add(v);
+        topRight.add(v);
+        botLeft.add(v);
+        botRight.add(v);
+        if(border != null){
+            border.move(v);
+        }
+    }
+
 
 
 
     @Override
     public void draw() {
-        if(border != null){
-            border.draw();
-        }
-        GL11.glBegin(GL11.GL_QUADS);
+
+        GL11.glLineWidth(2);
+        GL11.glBegin(GL11.GL_POLYGON);
+        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
         GL11.glColor3f((float)colour.getRed()/255,(float)colour.getGreen()/255,(float)colour.getBlue()/255);
         GL11.glVertex2fv(botLeft.getCoordsArray());
         GL11.glVertex2fv(botRight.getCoordsArray());
         GL11.glVertex2fv(topRight.getCoordsArray());
         GL11.glVertex2fv(topLeft.getCoordsArray());
         GL11.glEnd();
+        if(border != null){
+            border.draw();
+        }
+        move(new Vector((new Random().nextFloat())/50f,(new Random().nextFloat())/50f));
+
     }
 }
