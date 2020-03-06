@@ -31,6 +31,16 @@ public class QuadDrawing implements Drawable{
 
     }
 
+    public void rotateAroundPoint(Vector p, float angle){
+        this.topLeft.rotateAroundPoint(p,angle);
+        this.topRight.rotateAroundPoint(p,angle);
+        this.botLeft.rotateAroundPoint(p,angle);
+        this.botRight.rotateAroundPoint(p,angle);
+//        if(border != null){
+//            border.rotateAroundPoint(p,angle);
+//        }
+    }
+
     public void move(Vector v){
         topLeft.add(v);
         topRight.add(v);
@@ -39,6 +49,21 @@ public class QuadDrawing implements Drawable{
         if(border != null){
             border.move(v);
         }
+    }
+
+    public void scale(float s){
+        topLeft.scale(s);
+        topRight.scale(s);
+        botLeft.scale(s);
+        botRight.scale(s);
+        if(border != null){
+            border.scale(s);
+        }
+    }
+
+
+    public Vector getCentre(){
+        return new Vector((topLeft.x+botRight.x)/2, (topLeft.y+botRight.y)/2);
     }
 
 
@@ -51,15 +76,15 @@ public class QuadDrawing implements Drawable{
         GL11.glBegin(GL11.GL_POLYGON);
         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
         GL11.glColor3f((float)colour.getRed()/255,(float)colour.getGreen()/255,(float)colour.getBlue()/255);
-        GL11.glVertex2fv(botLeft.getCoordsArray());
-        GL11.glVertex2fv(botRight.getCoordsArray());
-        GL11.glVertex2fv(topRight.getCoordsArray());
-        GL11.glVertex2fv(topLeft.getCoordsArray());
+        GL11.glVertex2fv(Vector.toNormalizedDeviceCoords(botLeft).getCoordsArray());
+        GL11.glVertex2fv(Vector.toNormalizedDeviceCoords(botRight).getCoordsArray());
+        GL11.glVertex2fv(Vector.toNormalizedDeviceCoords(topRight).getCoordsArray());
+        GL11.glVertex2fv(Vector.toNormalizedDeviceCoords(topLeft).getCoordsArray());
         GL11.glEnd();
         if(border != null){
             border.draw();
         }
-        move(new Vector((new Random().nextFloat())/50f,(new Random().nextFloat())/50f));
-
+//        scale(1.01f);
+        // move(new Vector((new Random().nextFloat()-0.5f)/50f,(new Random().nextFloat()-0.5f)/50f));
     }
 }

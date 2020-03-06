@@ -1,6 +1,11 @@
 package math;
 
+import engine.Window;
+
 import java.util.Objects;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 //General Vector (2D for now)
 public class Vector {
@@ -59,6 +64,11 @@ public class Vector {
         return new float[]{x, y};
     }
 
+    public void scale(float s){
+        x *= s;
+        y *= s;
+    }
+
     public boolean isOrthogonal(Vector v) {
         return (0 - DELTA < dot(v) && dot(v) < 0 + DELTA);
     }
@@ -79,6 +89,24 @@ public class Vector {
 
     public String toString(){
         return "(" + x + ", "+ y+")";
+    }
+
+    public void rotateAroundPoint(Vector p, float angle){
+        float a = (float) Math.toRadians(angle);
+        float tempx = (float) (((x - p.x) * cos(a)) - ((p.y - y) * sin(a)) + p.x);
+        float tempy = (float) (((p.y - y) * cos(a)) + ((x - p.x) * sin(a)) + p.y);
+        x = tempx;
+        y = tempy;
+    }
+
+
+
+
+
+    public static Vector toNormalizedDeviceCoords(Vector v){
+        float x = 2.0f * (v.x + 0.5f) / Window.getWidth() - 1.0f;
+        float y = 2.0f * (v.y + 0.5f) / Window.getHeight() - 1.0f;
+        return new Vector(x,y);
     }
 
 

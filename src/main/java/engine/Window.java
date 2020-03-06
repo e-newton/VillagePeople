@@ -14,7 +14,7 @@ import java.awt.*;
 
 //The physical window we see on our screens when we run our game
 public class Window {
-    private int width, height;
+    private static int width, height;
     private String title;
     private long window;
     public int frames;
@@ -184,11 +184,15 @@ public class Window {
         }
     }
 
-    public int getWidth() {
+    public static Vector getCentre(){
+        return new Vector(width/2,height/2);
+    }
+
+    public static int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public static int getHeight() {
         return height;
     }
 

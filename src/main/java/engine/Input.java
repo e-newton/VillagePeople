@@ -69,7 +69,7 @@ public class Input {
     }
 
     public static double getMouseY() {
-        return mouseY;
+        return Window.getHeight() - mouseY;
     }
 
     public  GLFWKeyCallback getKeyboardCallback() {

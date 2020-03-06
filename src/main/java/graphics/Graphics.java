@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Graphics {
 
-    ArrayList<Drawable> drawables;
+    public static  ArrayList<Drawable> drawables;
 
     public Graphics(){
         drawables = new ArrayList<>();
@@ -16,8 +16,8 @@ public class Graphics {
         }
     }
 
-    public void addDrawable(Drawable d){
-        this.drawables.add(d);
+    public static void addDrawable(Drawable d){
+        drawables.add(d);
     }
 
 

@@ -37,4 +37,25 @@ public class VectorTest {
         assertEquals(v1.magnitude(),1.0f,Vector.DELTA);
     }
 
+    @Test
+    public void rotateAroundPointOriginTest(){
+        v1.rotateAroundPoint(new Vector(0,0), 90);
+        assertEquals(new Vector(0,1), v1);
+
+    }
+    @Test
+    public void rotateAroundPointTest(){
+        Vector vp = new Vector(1,1);
+        Vector v = new Vector(2,1);
+        v.rotateAroundPoint(vp,90);
+        assertEquals(v, new Vector(1,2));
+    }
+    @Test
+    public void rotateAroundPointTest2(){
+        Vector vp = new Vector(100,100);
+        Vector v = new Vector(200,100);
+        v.rotateAroundPoint(vp,90);
+        assertEquals(v, new Vector(100,200));
+    }
+
 }
