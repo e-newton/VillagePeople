@@ -20,6 +20,7 @@ public class Game {
         this.window = window;
         this.grid = new Grid((int)(Window.getWidth()/Grid.GRID_SQUARE_WIDTH)+1,(int)(Window.getHeight()/Grid.GRID_SQUARE_HEIGHT)+1);
         this.grid.rotateAroundPoint(Window.getCentre(), 45f);
+        System.out.println("test");
     }
 
     public void run(){
