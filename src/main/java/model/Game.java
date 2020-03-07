@@ -18,23 +18,28 @@ public class Game {
     public Game(Window window, Graphics graphics) {
         this.graphics = graphics;
         this.window = window;
-        this.grid = new Grid((int)(Window.getWidth()/Grid.GRID_SQUARE_WIDTH)+1,(int)(Window.getHeight()/Grid.GRID_SQUARE_HEIGHT)+1);
-        this.grid.rotateAroundPoint(Window.getCentre(), 45f);
+        Vector tl = new Vector(0, Window.getHeight());
+        Vector br = new Vector(Window.getWidth(),0);
+        this.grid = new Grid(tl,br,20,20);
+        //this.grid.rotateAroundPoint(Window.getCentre(), 45f);
     }
 
     public void run(){
 
         if(Input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)){
             Vector test = new Vector((float)Input.getMouseX(),(float)Input.getMouseY());
-            QuadDrawing q = new QuadDrawing(
-                    new Vector((float)Input.getMouseX(),(float)Input.getMouseY()),
-                    new Vector((float)Input.getMouseX() + 25f,(float)Input.getMouseY()),
-                    new Vector((float)Input.getMouseX() + 25f,(float)Input.getMouseY() + 25f),
-                    new Vector((float)Input.getMouseX(),(float)Input.getMouseY() + 25f),
-                    Color.BLACK
-            );
-            //q.rotateAroundPoint(q.getCentre(), 45f);
-            addDrawable(q);
+            if(grid.isOnGrid((float)Input.getMouseX(),(float)Input.getMouseY())){
+                grid.getGridSquareFromScreen((float)Input.getMouseX(),(float)Input.getMouseY()).setColour(Color.CYAN);
+            }
+//            QuadDrawing q = new QuadDrawing(
+//                    new Vector((float)Input.getMouseX(),(float)Input.getMouseY()),
+//                    new Vector((float)Input.getMouseX() + 25f,(float)Input.getMouseY()),
+//                    new Vector((float)Input.getMouseX() + 25f,(float)Input.getMouseY() + 25f),
+//                    new Vector((float)Input.getMouseX(),(float)Input.getMouseY() + 25f),
+//                    Color.BLACK
+//            );
+//            //q.rotateAroundPoint(q.getCentre(), 45f);
+//            addDrawable(q);
         }
 
     }
@@ -42,5 +47,7 @@ public class Game {
     public static void addDrawable(Drawable d){
         graphics.addDrawable(d);
     }
+
+    public static void removeDrawable(Drawable d) { graphics.removeDrawable(d);}
 
 }

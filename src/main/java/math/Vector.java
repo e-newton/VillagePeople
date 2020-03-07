@@ -9,7 +9,7 @@ import static java.lang.Math.sin;
 
 //General Vector (2D for now)
 public class Vector {
-    public static final float DELTA = 0.000001f;
+    public static final float DELTA = 0.001f;
     public float x;
     public float y;
 

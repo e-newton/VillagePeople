@@ -20,6 +20,8 @@ public class Graphics {
         drawables.add(d);
     }
 
+    public static void removeDrawable(Drawable d) { drawables.remove(d);}
+
 
 
 }

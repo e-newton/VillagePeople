@@ -19,10 +19,7 @@ public class GridSquare {
         this.x = row * Grid.GRID_SQUARE_WIDTH;
         this.y = col * Grid.GRID_SQUARE_HEIGHT;
         this.colour = colour;
-        this.quadDrawing = new QuadDrawing(new Vector(x,y), new Vector(x+Grid.GRID_SQUARE_WIDTH,y),
-                new Vector(x+Grid.GRID_SQUARE_WIDTH,y + Grid.GRID_SQUARE_HEIGHT),
-                new Vector(x,y + Grid.GRID_SQUARE_HEIGHT), colour);
-        this.quadDrawing.createBorder(Color.BLACK, 10f);
+        createQuadDrawing(colour);
         Game.addDrawable(this.quadDrawing);
     }
 
@@ -30,4 +27,21 @@ public class GridSquare {
         this.quadDrawing.rotateAroundPoint(p,angle);
     }
 
+    public Color getColour() {
+        return colour;
+    }
+
+    public void setColour(Color colour) {
+        Game.removeDrawable(this.quadDrawing);
+        this.colour = colour;
+        createQuadDrawing(colour);
+        Game.addDrawable(this.quadDrawing);
+    }
+
+    public void createQuadDrawing(Color colour) {
+        this.quadDrawing = new QuadDrawing(new Vector(x, y), new Vector(x + Grid.GRID_SQUARE_WIDTH, y),
+                new Vector(x + Grid.GRID_SQUARE_WIDTH, y + Grid.GRID_SQUARE_HEIGHT),
+                new Vector(x, y + Grid.GRID_SQUARE_HEIGHT), colour);
+        this.quadDrawing.createBorder(Color.BLACK, 10f);
+    }
 }
