@@ -11,9 +11,6 @@ public class Grid {
     private Vector topLeft;
     private Vector bottomRight;
 
-    private float width;
-    private float height;
-
     private int rows;
     private int cols;
     private GridSquare[][] squares;
@@ -22,12 +19,12 @@ public class Grid {
     public Grid(Vector topLeft, Vector bottomRight, int rows, int cols){
         this.rows = rows;
         this.cols = cols;
-        this.width = bottomRight.x - topLeft.x;
-        this.height = topLeft.y - bottomRight.y;
+        float width = bottomRight.x - topLeft.x;
+        float height = topLeft.y - bottomRight.y;
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
-        GRID_SQUARE_WIDTH = this.width/cols;
-        GRID_SQUARE_HEIGHT = this.height/rows;
+        GRID_SQUARE_WIDTH = width /cols;
+        GRID_SQUARE_HEIGHT = height /rows;
         this.squares = new GridSquare[rows][cols];
         for(int i = 0; i < rows; i++){
             for (int j = 0; j < cols; j++){

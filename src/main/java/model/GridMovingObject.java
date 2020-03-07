@@ -58,11 +58,9 @@ public class GridMovingObject {
             GridSquare current = getLowestFScore(fScore,openSet);
 
             if(current.equals(destination)){
-                //finalPath.add(current);
                 while (cameFrom.containsKey(current)){
                     current = cameFrom.get(current);
                     finalPath.add(current);
-                    //FINISHED HERE
                 }
                 Collections.reverse(finalPath);
                 this.path = finalPath;
@@ -139,7 +137,10 @@ public class GridMovingObject {
             seen.add(current);
             blocks.remove(0);
             if(current.getBuilding() != null && b.getClass().equals(current.getBuilding().getClass())){
-                return current;
+                if(current.getBuilding().isAvailable()){
+                    return current;
+                }
+
             }
             for(GridSquare n : current.getNeighbors()){
                 if(!seen.contains(n) && !blocks.contains(n)){

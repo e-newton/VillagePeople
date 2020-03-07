@@ -24,6 +24,14 @@ public class DynamicQuadDrawing extends QuadDrawing implements Animatible {
         direction.normalize();
     }
 
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
     public Vector getDestination(){
         return this.destination;
     }

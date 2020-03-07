@@ -27,7 +27,13 @@ public class Farm extends Building{
         this.colour = FARM_COLOUR;
     }
 
+    public int getFoodProduced() {
+        return foodProduced;
+    }
 
+    public void setFoodProduced(int foodProduced) {
+        this.foodProduced = foodProduced;
+    }
 
     public Food produceFood(){
         return new Food(type,foodProduced);
@@ -51,6 +57,16 @@ public class Farm extends Building{
             this.worker = null;
             temp.removeFarm();
         }
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return worker == null;
+    }
+
+    @Override
+    public void releaseWorkers() {
+        removeWorker();
     }
 
     @Override

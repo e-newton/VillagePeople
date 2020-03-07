@@ -5,6 +5,7 @@ import model.buildings.Farm;
 import model.buildings.Granary;
 import model.buildings.House;
 import model.resources.Food;
+import model.resources.FoodTypes;
 
 import java.awt.*;
 
@@ -51,12 +52,19 @@ public class Person extends GridMovingObject {
     public void removeHouse(House house) {
         if(house != null) {
             this.house = null;
+            stop();
             house.removeOccupant(this);
         }
     }
 
     public void addFoodToInventory(Food f){
         this.inventory = f;
+    }
+
+    public void stop(){
+        destination = null;
+        destinationBuilding = null;
+        path.clear();
     }
 
     public Food removeFoodFromInventory(){
@@ -95,7 +103,7 @@ public class Person extends GridMovingObject {
         }
 
         if(this.farm == null){
-            GridSquare gridWithBuilding = findClosestFarm();
+            GridSquare gridWithBuilding = findClosestBuilding(new Farm(FoodTypes.APPLE));
             if(gridWithBuilding != null){
                 Farm farm = (Farm) gridWithBuilding.getBuilding();
                 farm.setWorker(this);
@@ -122,6 +130,7 @@ public class Person extends GridMovingObject {
     }
 
     public void die(){
+        stop();
         removeHouse(this.house);
         removeFarm();
         this.position.removePerson(this);
@@ -143,6 +152,7 @@ public class Person extends GridMovingObject {
 
     public void removeFarm() {
         if(this.farm != null){
+            stop();
             Farm temp = this.farm;
             this.farm = null;
             temp.removeWorker();

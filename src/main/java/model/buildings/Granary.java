@@ -62,6 +62,16 @@ public class Granary extends Building{
     }
 
     @Override
+    public boolean isAvailable() {
+        return true;
+    }
+
+    @Override
+    public void releaseWorkers() {
+
+    }
+
+    @Override
     public void use(Person p) {
         addFood(p.removeFoodFromInventory());
         System.out.println("Granary: " +  inventory);

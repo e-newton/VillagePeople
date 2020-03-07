@@ -42,6 +42,9 @@ public class GridSquare {
     }
 
     public void setBuilding(Building b){
+        if(this.building != null){
+            this.building.releaseWorkers();
+        }
         this.building = b;
         this.quadDrawing.setColour(b.getColour());
         this.colour = b.getColour();
@@ -95,5 +98,13 @@ public class GridSquare {
                 new Vector(x + Grid.GRID_SQUARE_WIDTH, y + Grid.GRID_SQUARE_HEIGHT),
                 new Vector(x, y + Grid.GRID_SQUARE_HEIGHT), colour);
         this.quadDrawing.createBorder(Color.BLACK, 10f);
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
     }
 }

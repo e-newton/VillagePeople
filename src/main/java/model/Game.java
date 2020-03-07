@@ -19,22 +19,18 @@ import java.util.ArrayList;
 
 public class Game {
     private static Graphics graphics;
-    private Window window;
     private Grid grid;
     private GridSquare selected;
     private DynamicQuadDrawing dynamicQuadDrawing;
     private GridMovingObject gridMovingObject;
-    private ArrayList<Building> buildings;
     private ArrayList<Person> people;
     private double personTimer = 0;
     public Game(Window window, Graphics graphics) {
 
         this.graphics = graphics;
-        this.window = window;
         Vector tl = new Vector(0, Window.getHeight());
         Vector br = new Vector(Window.getWidth(),0);
         this.grid = new Grid(tl,br,20,20);
-        buildings = new ArrayList<>();
         people = new ArrayList<>();
 
 //        this.gridMovingObject = new GridMovingObject(this.grid.getGridSquareFromScreen(0,0),Color.GREEN);
@@ -68,21 +64,27 @@ public class Game {
 
         people.removeAll(deadPeople);
 
-        if(selected != null){
+        if(selected != null && personTimer > 1000){
+
             if(Input.isKeyDown(GLFW.GLFW_KEY_1)){
-                selected.setBuilding(new Farm(selected, FoodTypes.APPLE));
+                System.out.println("AH");
+                new Farm(selected, FoodTypes.APPLE);
+                personTimer = 0;
             }
             if(Input.isKeyDown(GLFW.GLFW_KEY_2)){
                 new Granary(selected);
+                personTimer = 0;
             }
             if(Input.isKeyDown(GLFW.GLFW_KEY_3)){
                 new House(selected);
+                personTimer = 0;
             }
-            if(Input.isKeyDown(GLFW.GLFW_KEY_SPACE) && personTimer > 1000){
+            if(Input.isKeyDown(GLFW.GLFW_KEY_SPACE)){
                 Person p = new Person("Bob", selected, Color.blue);
                 selected.addPerson(p);
                 people.add(p);
                 personTimer = 0;
+
             }
         }
 

@@ -39,6 +39,22 @@ public class House extends Building{
 
 
     @Override
+    public boolean isAvailable() {
+        return occupants.size() < MAX_OCCUPANCY;
+    }
+
+    @Override
+    public void releaseWorkers() {
+        removeOccupants();
+    }
+
+    private void removeOccupants() {
+        for (Person p : occupants){
+            removeOccupant(p);
+        }
+    }
+
+    @Override
     public void use(Person p) {
         if(occupants.contains(p)){
             p.sleep();

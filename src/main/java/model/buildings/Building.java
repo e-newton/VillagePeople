@@ -13,6 +13,10 @@ public abstract class Building {
         return gridSquare;
     }
 
+    public abstract boolean isAvailable();
+
+    public abstract void releaseWorkers();
+
     public Color getColour() {
         return colour;
     }

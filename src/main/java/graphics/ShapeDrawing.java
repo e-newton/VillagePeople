@@ -12,7 +12,7 @@ public class ShapeDrawing implements Drawable{
     Collection<Vector> vertices;
     Color fillColour;
 
-    public ShapeDrawing(Collection vertices, Color colour){
+    public ShapeDrawing(Collection<Vector> vertices, Color colour){
         this.vertices = vertices;
         this.fillColour = colour;
     }
