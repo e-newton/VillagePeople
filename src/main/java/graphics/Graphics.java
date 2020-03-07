@@ -1,20 +1,23 @@
 package graphics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Graphics {
     public static  ArrayList<Animatible> animatibles;
-    public static  ArrayList<Drawable> drawables;
+    public static ArrayList<ArrayList<Drawable>> layers;
 
     public Graphics(){
-        drawables = new ArrayList<>();
+        layers = new ArrayList<>();
         animatibles = new ArrayList<>();
     }
 
     public void render(){
         animate();
-        for (Drawable d: drawables) {
-            d.draw();
+        for(ArrayList<Drawable> layer: layers){
+            for(Drawable d : layer){
+                d.draw();
+            }
         }
 
     }
@@ -27,11 +30,18 @@ public class Graphics {
 
     public static void addAnimatible(Animatible a) {animatibles.add(a);}
 
-    public static void addDrawable(Drawable d){
-        drawables.add(d);
+    public static void addDrawable(Drawable d, int layer){
+        if(layers.size() <= layer){
+            layers.add(new ArrayList<>(Arrays.asList(d)));
+        }
+        else{
+            layers.get(layer).add(d);
+        }
     }
 
-    public static void removeDrawable(Drawable d) { drawables.remove(d);}
+    public static void removeDrawable(Drawable d, int layer) {
+        layers.get(layer).remove(d);
+    }
 
 
 

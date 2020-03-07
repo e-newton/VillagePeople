@@ -13,7 +13,6 @@ public class GridMovingObject {
     private DynamicQuadDrawing quad;
     private GridSquare destination;
     private GridSquare next;
-    private boolean isMoving = false;
 
     public GridMovingObject(GridSquare position, Color colour){
         this.position = position;
@@ -23,9 +22,9 @@ public class GridMovingObject {
                 colour);
         this.quad.setPosition(position.getCentre());
         this.quad.createBorder(Color.BLACK, 10f);
-        Graphics.addDrawable(this.quad);
+        Graphics.addDrawable(this.quad, 2);
         Graphics.addAnimatible(this.quad);
-        this.path = new ArrayList<GridSquare>();
+        this.path = new ArrayList<>();
 
 
     }

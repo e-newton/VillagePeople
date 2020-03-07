@@ -32,7 +32,7 @@ public class Game {
                 Color.magenta
         );
         dynamicQuadDrawing.createBorder(Color.black, 0f);
-        addDrawable(dynamicQuadDrawing);
+        addDrawable(dynamicQuadDrawing,2);
         addAnimatible(dynamicQuadDrawing);
 
 
@@ -71,11 +71,11 @@ public class Game {
     }
     public static void addAnimatible(Animatible a){graphics.addAnimatible(a);}
 
-    public static void addDrawable(Drawable d){
-        graphics.addDrawable(d);
+    public static void addDrawable(Drawable d, int layer){
+        graphics.addDrawable(d, layer);
     }
 
-    public static void removeDrawable(Drawable d) { graphics.removeDrawable(d);}
+    public static void removeDrawable(Drawable d, int layer) { graphics.removeDrawable(d,layer);}
 
 
 

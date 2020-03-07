@@ -2,6 +2,7 @@ package model;
 
 import graphics.QuadDrawing;
 import math.Vector;
+import model.buildings.Building;
 
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -15,6 +16,8 @@ public class GridSquare {
     private int col;
     private float x;
     private float y;
+    private Building building;
+    private ArrayList<Person> people;
 
     private ArrayList<GridSquare> neighbors;
 
@@ -37,8 +40,9 @@ public class GridSquare {
         this.y = col * Grid.GRID_SQUARE_HEIGHT;
         this.colour = colour;
         createQuadDrawing(colour);
-        Game.addDrawable(this.quadDrawing);
+        Game.addDrawable(this.quadDrawing,1);
         neighbors = new ArrayList<>();
+        people = new ArrayList<>();
     }
 
     public void rotateAroundPoint(Vector p, float angle){
@@ -50,10 +54,10 @@ public class GridSquare {
     }
 
     public void setColour(Color colour) {
-        Game.removeDrawable(this.quadDrawing);
+        Game.removeDrawable(this.quadDrawing,1);
         this.colour = colour;
         createQuadDrawing(colour);
-        Game.addDrawable(this.quadDrawing);
+        Game.addDrawable(this.quadDrawing,1);
     }
 
     public void setBorderColour(Color colour){
