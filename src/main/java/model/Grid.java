@@ -3,6 +3,7 @@ package model;
 import math.Vector;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Grid {
     public static float GRID_SQUARE_WIDTH;
@@ -33,7 +34,34 @@ public class Grid {
                 this.squares[i][j] = new GridSquare(i,j, Color.WHITE);
             }
         }
+        for(int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                getNeighborsForSquare(rows, cols, i, j);
+            }
+        }
 
+    }
+
+    public GridSquare[][] getSquares() {
+        return squares;
+    }
+
+    private void getNeighborsForSquare(int rows, int cols, int i, int j) {
+        ArrayList<GridSquare> neighbors = new ArrayList<>();
+        if(i != 0){
+            neighbors.add(squares[i-1][j]);
+        }
+        if(j != 0 ){
+            neighbors.add(squares[i][j-1]);
+        }
+        if(i != rows - 1){
+            neighbors.add(squares[i+1][j]);
+        }
+        if(j != cols - 1){
+            neighbors.add(squares[i][j+1]);
+        }
+
+        this.squares[i][j].setNeighbors(neighbors);
     }
 
     public boolean isOnGrid(float x, float y){

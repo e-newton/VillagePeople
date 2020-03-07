@@ -14,6 +14,7 @@ import java.awt.*;
 
 //The physical window we see on our screens when we run our game
 public class Window {
+    public Timer timer;
     private static int width, height;
     private String title;
     private long window;
@@ -37,6 +38,7 @@ public class Window {
         this.height = height;
         this.title = title;
         this.graphics = new Graphics();
+        this.timer = new Timer();
         this.game = new Game(this, graphics);
     }
     //Creation of our window
@@ -106,6 +108,7 @@ public class Window {
         GLFW.glfwPollEvents();
 
         //Game run for a tick
+        timer.update();
         game.run();
 
         //Frames per second

@@ -4,6 +4,9 @@ import graphics.QuadDrawing;
 import math.Vector;
 
 import java.awt.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Queue;
 
 public class GridSquare {
     private Color colour;
@@ -13,6 +16,20 @@ public class GridSquare {
     private float x;
     private float y;
 
+    private ArrayList<GridSquare> neighbors;
+
+    public ArrayList<GridSquare> getNeighbors() {
+        return neighbors;
+    }
+
+    public void setNeighbors(ArrayList<GridSquare> neighbors) {
+        this.neighbors = neighbors;
+    }
+
+    public Vector getCentre(){
+        return quadDrawing.getCentre();
+    }
+
     public GridSquare(int row, int col, Color colour){
         this.row = row;
         this.col = col;
@@ -21,6 +38,7 @@ public class GridSquare {
         this.colour = colour;
         createQuadDrawing(colour);
         Game.addDrawable(this.quadDrawing);
+        neighbors = new ArrayList<>();
     }
 
     public void rotateAroundPoint(Vector p, float angle){
@@ -36,6 +54,10 @@ public class GridSquare {
         this.colour = colour;
         createQuadDrawing(colour);
         Game.addDrawable(this.quadDrawing);
+    }
+
+    public void setBorderColour(Color colour){
+        this.quadDrawing.setBorderColour(colour);
     }
 
     public void createQuadDrawing(Color colour) {

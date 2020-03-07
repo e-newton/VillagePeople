@@ -5,43 +5,15 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public class QuadBorder implements Drawable {
-    private Vector topLeft;
-    private Vector topRight;
-    private Vector botRight;
-    private Vector botLeft;
-    private Color colour;
-    private float thickness;
+public class QuadBorder extends QuadDrawing implements Drawable {
 
-    public QuadBorder(Vector topLeft, Vector topRight, Vector botRight, Vector botLeft, Color colour) {
-        this.topLeft = topLeft;
-        this.topRight = topRight;
-        this.botRight = botRight;
-        this.botLeft = botLeft;
-        this.colour = colour;
-        this.thickness = 8f;
+    float thickness;
+
+    public QuadBorder(Vector topLeft, Vector topRight, Vector botRight, Vector botLeft, Color colour, float thickness) {
+        super(topLeft, topRight, botRight, botLeft, colour);
+        this.thickness = thickness;
     }
 
-    public void move(Vector v){
-        topLeft.add(v);
-        topRight.add(v);
-        botLeft.add(v);
-        botRight.add(v);
-    }
-
-    public void scale(float s){
-        topLeft.scale(s);
-        topRight.scale(s);
-        botLeft.scale(s);
-        botRight.scale(s);
-    }
-
-    public void rotateAroundPoint(Vector p, float angle){
-        topLeft.rotateAroundPoint(p,angle);
-        topRight.rotateAroundPoint(p,angle);
-        botLeft.rotateAroundPoint(p,angle);
-        botRight.rotateAroundPoint(p,angle);
-    }
     @Override
     public void draw() {
 
@@ -55,5 +27,9 @@ public class QuadBorder implements Drawable {
         GL11.glVertex2fv(Vector.toNormalizedDeviceCoords(topLeft).getCoordsArray());
         GL11.glEnd();
 
+    }
+
+    public void setBorderColour(Color colour) {
+        this.colour = colour;
     }
 }

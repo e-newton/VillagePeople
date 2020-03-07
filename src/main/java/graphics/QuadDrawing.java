@@ -9,12 +9,12 @@ import java.util.Random;
 
 public class QuadDrawing implements Drawable{
 
-    private Vector topLeft;
-    private Vector topRight;
-    private Vector botRight;
-    private Vector botLeft;
-    private Color colour;
-    private QuadBorder border;
+    protected Vector topLeft;
+    protected Vector topRight;
+    protected Vector botRight;
+    protected Vector botLeft;
+    protected Color colour;
+    protected QuadBorder border;
 
     public QuadDrawing(Vector topLeft, Vector topRight, Vector botRight, Vector botLeft, Color colour) {
         this.topLeft = topLeft;
@@ -22,12 +22,20 @@ public class QuadDrawing implements Drawable{
         this.botRight = botRight;
         this.botLeft = botLeft;
         this.colour = colour;
-        createBorder(Color.CYAN, 0f);
+        //createBorder(Color.CYAN, 0f);
+    }
+
+    public float getWidth(){
+        return topRight.x - topLeft.x;
+    }
+
+    public float getHeight(){
+        return topRight.y - botRight.y;
     }
 
     public void createBorder(Color borderColour, float thinkness){
 
-        border = new QuadBorder(topLeft,topRight,botRight,botLeft, borderColour);
+        border = new QuadBorder(topLeft,topRight,botRight,botLeft, borderColour, 10f);
 
     }
 
@@ -60,6 +68,18 @@ public class QuadDrawing implements Drawable{
             border.scale(s);
         }
     }
+    public void setPosition(Vector centre){
+        float dx = getWidth()/2;
+        float dy = getHeight()/2;
+        topLeft = new Vector(centre.x - dx, centre.y - dy);
+        topRight = new Vector(centre.x + dx, centre.y - dy);
+        botRight = new Vector(centre.x + dx, centre.y + dy);
+        botLeft = new Vector(centre.x - dx, centre.y + dy);
+        if(border != null){
+            border.setPosition(centre);
+        }
+
+    }
 
 
     public Vector getCentre(){
@@ -86,5 +106,11 @@ public class QuadDrawing implements Drawable{
         }
 //        scale(1.01f);
         // move(new Vector((new Random().nextFloat()-0.5f)/50f,(new Random().nextFloat()-0.5f)/50f));
+    }
+
+
+
+    public void setBorderColour(Color colour) {
+        this.border.setBorderColour(colour);
     }
 }

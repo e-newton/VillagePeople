@@ -69,6 +69,15 @@ public class Vector {
         y *= s;
     }
 
+    public static Vector scaled(Vector v, float s){
+        return new Vector(v.x*s,v.y*s);
+
+    }
+
+    public float getDistanceTo(Vector v){
+        return new Vector(v.x - x, v.y - y).magnitude();
+    }
+
     public boolean isOrthogonal(Vector v) {
         return (0 - DELTA < dot(v) && dot(v) < 0 + DELTA);
     }
