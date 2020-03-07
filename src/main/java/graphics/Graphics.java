@@ -30,6 +30,10 @@ public class Graphics {
 
     public static void addAnimatible(Animatible a) {animatibles.add(a);}
 
+    public static void removeAnimatible(Animatible a){
+        animatibles.remove(a);
+    }
+
     public static void addDrawable(Drawable d, int layer){
         if(layers.size() <= layer){
             layers.add(new ArrayList<>(Arrays.asList(d)));

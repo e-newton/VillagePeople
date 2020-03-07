@@ -6,10 +6,16 @@ import engine.Window;
 import graphics.*;
 import graphics.Graphics;
 import math.Vector;
+import model.buildings.Building;
+import model.buildings.Farm;
+import model.buildings.Granary;
+import model.buildings.House;
+import model.resources.FoodTypes;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 
 public class Game {
     private static Graphics graphics;
@@ -18,6 +24,9 @@ public class Game {
     private GridSquare selected;
     private DynamicQuadDrawing dynamicQuadDrawing;
     private GridMovingObject gridMovingObject;
+    private ArrayList<Building> buildings;
+    private ArrayList<Person> people;
+    private double personTimer = 0;
     public Game(Window window, Graphics graphics) {
 
         this.graphics = graphics;
@@ -25,15 +34,18 @@ public class Game {
         Vector tl = new Vector(0, Window.getHeight());
         Vector br = new Vector(Window.getWidth(),0);
         this.grid = new Grid(tl,br,20,20);
-        this.gridMovingObject = new GridMovingObject(this.grid.getGridSquareFromScreen(0,0),Color.GREEN);
-        dynamicQuadDrawing = new DynamicQuadDrawing(
-                new Vector(50,50), new Vector(60,50),
-                new Vector(60,60), new Vector(50,60),
-                Color.magenta
-        );
-        dynamicQuadDrawing.createBorder(Color.black, 0f);
-        addDrawable(dynamicQuadDrawing,2);
-        addAnimatible(dynamicQuadDrawing);
+        buildings = new ArrayList<>();
+        people = new ArrayList<>();
+
+//        this.gridMovingObject = new GridMovingObject(this.grid.getGridSquareFromScreen(0,0),Color.GREEN);
+//        dynamicQuadDrawing = new DynamicQuadDrawing(
+//                new Vector(50,50), new Vector(60,50),
+//                new Vector(60,60), new Vector(50,60),
+//                Color.magenta
+//        );
+//        dynamicQuadDrawing.createBorder(Color.black, 0f);
+//        addDrawable(dynamicQuadDrawing,2);
+//        addAnimatible(dynamicQuadDrawing);
 
 
 
@@ -44,12 +56,33 @@ public class Game {
 
     public void run(){
 
+        personTimer += Timer.dt;
+        ArrayList<Person> deadPeople = new ArrayList<>();
+        for(Person p : people){
+            p.step();
+            if(!p.isAlive()){
+                p.die();
+                deadPeople.add(p);
+            }
+        }
+
+        people.removeAll(deadPeople);
+
         if(selected != null){
             if(Input.isKeyDown(GLFW.GLFW_KEY_1)){
-                selected.setColour(Color.BLUE);
+                selected.setBuilding(new Farm(selected, FoodTypes.APPLE));
             }
             if(Input.isKeyDown(GLFW.GLFW_KEY_2)){
-                selected.setColour(Color.GREEN);
+                new Granary(selected);
+            }
+            if(Input.isKeyDown(GLFW.GLFW_KEY_3)){
+                new House(selected);
+            }
+            if(Input.isKeyDown(GLFW.GLFW_KEY_SPACE) && personTimer > 1000){
+                Person p = new Person("Bob", selected, Color.blue);
+                selected.addPerson(p);
+                people.add(p);
+                personTimer = 0;
             }
         }
 
@@ -62,13 +95,14 @@ public class Game {
                 }
                 selected = grid.getGridSquareFromScreen((float)Input.getMouseX(),(float)Input.getMouseY());
                 selected.setBorderColour(Color.RED);
-                this.gridMovingObject.moveTo(selected);
             }
         }
 
-        this.gridMovingObject.move();
 
     }
+
+
+
     public static void addAnimatible(Animatible a){graphics.addAnimatible(a);}
 
     public static void addDrawable(Drawable d, int layer){

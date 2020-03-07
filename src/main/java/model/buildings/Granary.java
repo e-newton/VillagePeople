@@ -1,20 +1,30 @@
 package model.buildings;
 
 import graphics.Graphics;
+import model.GridSquare;
 import model.Person;
 import model.exceptions.NoTypeAvailabeException;
 import model.exceptions.NotEnoughException;
 import model.resources.Food;
 import model.resources.FoodTypes;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public class Granary extends Building{
-
+    private static final Color GRANARY_COLOUR = Color.GRAY;
     HashMap<FoodTypes, Integer> inventory;
+
+    public Granary(GridSquare gridSquare) {
+        inventory = new HashMap<>();
+        this.colour = GRANARY_COLOUR;
+        this.gridSquare = gridSquare;
+        gridSquare.setBuilding(this);
+    }
 
     public Granary() {
         inventory = new HashMap<>();
+        this.colour = GRANARY_COLOUR;
     }
 
     public void addFood(Food food) {
@@ -53,18 +63,8 @@ public class Granary extends Building{
 
     @Override
     public void use(Person p) {
-        try {
-            p.addFoodToInventory(removeFood(FoodTypes.APPLE,Person.MAX_INVENTORY));
-        } catch (NotEnoughException e) {
-            try {
-                p.addFoodToInventory(removeFood(FoodTypes.APPLE,inventory.get(FoodTypes.APPLE)));
-            } catch (NotEnoughException ex) {
-                ex.printStackTrace();
-            } catch (NoTypeAvailabeException ex) {
-                ex.printStackTrace();
-            }
-        } catch (NoTypeAvailabeException e) {
-            e.printStackTrace();
-        }
+        addFood(p.removeFoodFromInventory());
+        System.out.println("Granary: " +  inventory);
     }
+
 }

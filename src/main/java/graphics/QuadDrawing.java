@@ -39,6 +39,14 @@ public class QuadDrawing implements Drawable{
 
     }
 
+    public Color getColour() {
+        return colour;
+    }
+
+    public void setColour(Color colour) {
+        this.colour = colour;
+    }
+
     public void rotateAroundPoint(Vector p, float angle){
         this.topLeft.rotateAroundPoint(p,angle);
         this.topRight.rotateAroundPoint(p,angle);

@@ -25,6 +25,32 @@ public class GridSquare {
         return neighbors;
     }
 
+    public ArrayList<Person> getPeople() {
+        return people;
+    }
+
+    public void addPerson(Person p) {
+        if(!people.contains(p)){
+            people.add(p);
+        }
+    }
+
+    public void removePerson(Person p) {
+        if(people.contains(p)){
+            people.remove(p);
+        }
+    }
+
+    public void setBuilding(Building b){
+        this.building = b;
+        this.quadDrawing.setColour(b.getColour());
+        this.colour = b.getColour();
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
     public void setNeighbors(ArrayList<GridSquare> neighbors) {
         this.neighbors = neighbors;
     }

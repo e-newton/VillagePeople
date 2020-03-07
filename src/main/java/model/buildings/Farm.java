@@ -1,18 +1,33 @@
 package model.buildings;
 
+import model.GridSquare;
 import model.Person;
 import model.resources.Food;
 import model.resources.FoodTypes;
 
+import java.awt.*;
+
 public class Farm extends Building{
+    private static final Color FARM_COLOUR = Color.GREEN;
     private Person worker;
     private int foodProduced = 3;
     FoodTypes type;
 
 
+
+    public Farm(GridSquare gridSquare, FoodTypes type) {
+        this.type = type;
+        this.colour = FARM_COLOUR;
+        this.gridSquare = gridSquare;
+        gridSquare.setBuilding(this);
+    }
+
     public Farm(FoodTypes type) {
         this.type = type;
+        this.colour = FARM_COLOUR;
     }
+
+
 
     public Food produceFood(){
         return new Food(type,foodProduced);

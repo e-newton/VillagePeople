@@ -3,22 +3,26 @@ package model;
 import graphics.DynamicQuadDrawing;
 import graphics.Graphics;
 import math.Vector;
+import model.buildings.Building;
+import model.buildings.Farm;
+import model.resources.FoodTypes;
 
 import java.awt.*;
 import java.util.*;
 
 public class GridMovingObject {
-    private GridSquare position;
-    private ArrayList<GridSquare> path;
-    private DynamicQuadDrawing quad;
-    private GridSquare destination;
-    private GridSquare next;
+    protected GridSquare position;
+    protected ArrayList<GridSquare> path;
+    protected DynamicQuadDrawing quad;
+    protected GridSquare destination;
+    protected GridSquare next;
 
-    public GridMovingObject(GridSquare position, Color colour){
+    public GridMovingObject(GridSquare position, Color colour, float radius){
         this.position = position;
+        Vector centre = position.getCentre();
         this.quad = new DynamicQuadDrawing(
-                new Vector(50,50), new Vector(60,50),
-                new Vector(60,60), new Vector(50,60),
+                new Vector(centre.x-radius,centre.y-radius), new Vector(centre.x+radius,centre.y-radius),
+                new Vector(centre.x+radius,centre.y+radius), new Vector(centre.x-radius,centre.y+radius),
                 colour);
         this.quad.setPosition(position.getCentre());
         this.quad.createBorder(Color.BLACK, 10f);
@@ -29,39 +33,14 @@ public class GridMovingObject {
 
     }
 
-    public void move(){
-        if(destination == position){
-            destination = null;
-            return;
-        }
-        if(this.next == null){
-            if(!path.isEmpty()) {
-                this.next = path.get(0);
-                path.remove(0);
-                this.quad.setDestination(this.next.getCentre());
-            } else if (destination != null){
-                this.next = destination;
-                this.quad.setDestination(this.next.getCentre());
-            }
-
-        }
-        if(this.next != null &&this.quad.getCentre().equals(this.next.getCentre())){
-            this.position = this.next;
-            this.next = null;
-        }
-
-
+    public void kill(){
+        this.path.clear();
+        this.destination = null;
+        Graphics.removeDrawable(this.quad, 2);
+        Graphics.removeAnimatible(this.quad);
     }
 
-    public void moveTo(GridSquare destination){
-        if(!destination.equals(this.destination)){
-            this.path.clear();
-            this.destination = destination;
-            search(destination);
-            System.out.printf("");
-        }
 
-    }
 
     public void search(GridSquare destination){
         ArrayList<GridSquare> finalPath = new ArrayList<>();
@@ -122,6 +101,55 @@ public class GridMovingObject {
             }
         }
         return rv;
+    }
+
+    public GridSquare findClosestFarm(){
+        ArrayList<GridSquare> blocks = new ArrayList<>();
+        ArrayList<GridSquare> seen = new ArrayList<>();
+        blocks.add(this.position);
+        while(!blocks.isEmpty()){
+            GridSquare current = blocks.get(0);
+            seen.add(current);
+            blocks.remove(0);
+            if(current.getBuilding() != null && Farm.class.equals(current.getBuilding().getClass())){
+                Farm f = (Farm) current.getBuilding();
+                if(f.getWorker() == null){
+                    return current;
+                }
+
+            }
+            for(GridSquare n : current.getNeighbors()){
+                if(!seen.contains(n) && !blocks.contains(n)){
+                    blocks.add(n);
+                }
+            }
+        }
+
+
+        return null;
+
+    }
+
+    public GridSquare findClosestBuilding(Building b){
+        ArrayList<GridSquare> blocks = new ArrayList<>();
+        ArrayList<GridSquare> seen = new ArrayList<>();
+        blocks.add(this.position);
+        while(!blocks.isEmpty()){
+            GridSquare current = blocks.get(0);
+            seen.add(current);
+            blocks.remove(0);
+            if(current.getBuilding() != null && b.getClass().equals(current.getBuilding().getClass())){
+                return current;
+            }
+            for(GridSquare n : current.getNeighbors()){
+                if(!seen.contains(n) && !blocks.contains(n)){
+                    blocks.add(n);
+                }
+            }
+        }
+
+
+        return null;
     }
 
 
