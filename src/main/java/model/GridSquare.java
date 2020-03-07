@@ -1,0 +1,69 @@
+package model;
+
+import graphics.QuadDrawing;
+import math.Vector;
+
+import java.awt.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Queue;
+
+public class GridSquare {
+    private Color colour;
+    private QuadDrawing quadDrawing;
+    private int row;
+    private int col;
+    private float x;
+    private float y;
+
+    private ArrayList<GridSquare> neighbors;
+
+    public ArrayList<GridSquare> getNeighbors() {
+        return neighbors;
+    }
+
+    public void setNeighbors(ArrayList<GridSquare> neighbors) {
+        this.neighbors = neighbors;
+    }
+
+    public Vector getCentre(){
+        return quadDrawing.getCentre();
+    }
+
+    public GridSquare(int row, int col, Color colour){
+        this.row = row;
+        this.col = col;
+        this.x = row * Grid.GRID_SQUARE_WIDTH;
+        this.y = col * Grid.GRID_SQUARE_HEIGHT;
+        this.colour = colour;
+        createQuadDrawing(colour);
+        Game.addDrawable(this.quadDrawing);
+        neighbors = new ArrayList<>();
+    }
+
+    public void rotateAroundPoint(Vector p, float angle){
+        this.quadDrawing.rotateAroundPoint(p,angle);
+    }
+
+    public Color getColour() {
+        return colour;
+    }
+
+    public void setColour(Color colour) {
+        Game.removeDrawable(this.quadDrawing);
+        this.colour = colour;
+        createQuadDrawing(colour);
+        Game.addDrawable(this.quadDrawing);
+    }
+
+    public void setBorderColour(Color colour){
+        this.quadDrawing.setBorderColour(colour);
+    }
+
+    public void createQuadDrawing(Color colour) {
+        this.quadDrawing = new QuadDrawing(new Vector(x, y), new Vector(x + Grid.GRID_SQUARE_WIDTH, y),
+                new Vector(x + Grid.GRID_SQUARE_WIDTH, y + Grid.GRID_SQUARE_HEIGHT),
+                new Vector(x, y + Grid.GRID_SQUARE_HEIGHT), colour);
+        this.quadDrawing.createBorder(Color.BLACK, 10f);
+    }
+}

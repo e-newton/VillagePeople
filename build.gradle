@@ -1,16 +1,29 @@
 plugins {
     id 'java'
 }
+import org.gradle.internal.os.OperatingSystem
 
 group 'org.example'
 version '1.0-SNAPSHOT'
 project.ext.lwjglVersion = "3.2.3"
-project.ext.lwjglNatives = "natives-windows"
+switch (OperatingSystem.current()) {
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = "natives-macos"
+        break
+    case OperatingSystem.WINDOWS:
+        project.ext.lwjglNatives = "natives-windows"
+        break
+}
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+    maxHeapSize = '1G'
 }
 
 dependencies {
@@ -40,7 +53,6 @@ dependencies {
     implementation "org.lwjgl:lwjgl-opengles"
     implementation "org.lwjgl:lwjgl-openvr"
     implementation "org.lwjgl:lwjgl-opus"
-    implementation "org.lwjgl:lwjgl-ovr"
     implementation "org.lwjgl:lwjgl-par"
     implementation "org.lwjgl:lwjgl-remotery"
     implementation "org.lwjgl:lwjgl-rpmalloc"
@@ -73,7 +85,6 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-opengles::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-openvr::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-opus::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-ovr::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-par::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-remotery::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-rpmalloc::$lwjglNatives"
@@ -84,6 +95,7 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-tinyfd::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-tootle::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-vma::$lwjglNatives"
+    if (lwjglNatives == "natives-macos") runtimeOnly "org.lwjgl:lwjgl-vulkan::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-xxhash::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-yoga::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"

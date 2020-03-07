@@ -1,14 +1,21 @@
 package engine;
 
+import graphics.Graphics;
+import graphics.QuadDrawing;
+import math.Vector;
+import model.Game;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+
 //The physical window we see on our screens when we run our game
 public class Window {
-    private int width, height;
+    public Timer timer;
+    private static int width, height;
     private String title;
     private long window;
     public int frames;
@@ -19,6 +26,8 @@ public class Window {
     private boolean isResized;
     private boolean isFullScreen;
     private int[] windowPosX = new int[1], windowPosY = new int[1];
+    public Graphics graphics;
+    public Game game;
 
 
 
@@ -28,6 +37,9 @@ public class Window {
         this.width = width;
         this.height = height;
         this.title = title;
+        this.graphics = new Graphics();
+        this.timer = new Timer();
+        this.game = new Game(this, graphics);
     }
     //Creation of our window
     public void create() {
@@ -42,6 +54,7 @@ public class Window {
             return;
         }
 
+
         //Set up window parameters
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_TRUE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
@@ -52,6 +65,7 @@ public class Window {
         GLFW.glfwSetWindowPos(window, windowPosX[0], windowPosY[0]);
 
         //Set Input Callbacks
+        createCallbacks();
         GLFW.glfwSetKeyCallback(window,input.getKeyboardCallback());
         GLFW.glfwSetMouseButtonCallback(window, input.getMouseButtonsCallback());
         GLFW.glfwSetCursorPosCallback(window, input.getMouseMoveCallback());
@@ -93,6 +107,10 @@ public class Window {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         GLFW.glfwPollEvents();
 
+        //Game run for a tick
+        timer.update();
+        game.run();
+
         //Frames per second
         frames++;
         if(System.currentTimeMillis() > time + 1000){
@@ -102,7 +120,12 @@ public class Window {
         }
     }
     public void swapBuffers() {
+        render();
         GLFW.glfwSwapBuffers(window);
+    }
+
+    public void render() {
+        this.graphics.render();
     }
 
     public void setBackgroundColour(float r, float b, float g) {
@@ -162,5 +185,30 @@ public class Window {
         } else {
             GLFW.glfwSetWindowMonitor(window, 0, windowPosX[0],windowPosY[0],width, height, 0);
         }
+    }
+
+    public static Vector getCentre(){
+        return new Vector(width/2,height/2);
+    }
+
+    public static int getWidth() {
+        return width;
+    }
+
+    public static int getHeight() {
+        return height;
+    }
+
+    public Vector screenToGraphics(float screenX, float screenY){
+
+        screenY /= getHeight();
+        screenY *= 2;
+        screenY = -screenY;
+        screenY += 1.0f;
+
+        screenX /= getWidth();
+        screenX *= 2;
+        screenX -= 1.0f;
+        return new Vector(screenX,screenY);
     }
 }

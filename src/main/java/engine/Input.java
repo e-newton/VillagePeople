@@ -69,6 +69,9 @@ public class Input {
     }
 
     public static double getMouseY() {
+        return Window.getHeight() - mouseY;
+    }
+    public static double getMouseYActual() {
         return mouseY;
     }
 

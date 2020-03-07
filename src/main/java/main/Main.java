@@ -2,9 +2,12 @@ package main;
 
 import engine.Input;
 import engine.Window;
+import graphics.QuadDrawing;
+import math.Vector;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
+
 
 //The main class that starts our game and contains the game loop.
 public class Main implements Runnable {
@@ -16,8 +19,15 @@ public class Main implements Runnable {
 
     //Creates a new game thread
     public void start() {
-        game = new Thread(this, "game");
-        game.start();
+        if(System.getProperty("os.name").equals("Mac OS X")){
+            run();
+        }
+        else{
+            game = new Thread(this, "game");
+            game.start();
+        }
+
+
     }
 
     //Initializes the window field for our game
@@ -51,16 +61,13 @@ public class Main implements Runnable {
     //Logic Update
     public void update(){
         window.update();
-        if(Input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)){
-            System.out.println("X: " + Input.getMouseX() + " Y: " +Input.getMouseY());
-        }
-
-
     }
     //Render Update
     public void render() {
         window.swapBuffers();
     }
+
+
 
 
 
