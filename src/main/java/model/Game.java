@@ -19,6 +19,7 @@ public class Game {
     private DynamicQuadDrawing dynamicQuadDrawing;
     private GridMovingObject gridMovingObject;
     public Game(Window window, Graphics graphics) {
+
         this.graphics = graphics;
         this.window = window;
         Vector tl = new Vector(0, Window.getHeight());
@@ -39,6 +40,7 @@ public class Game {
 
         //this.grid.rotateAroundPoint(Window.getCentre(), 45f);
     }
+
 
     public void run(){
 
