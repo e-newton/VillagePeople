@@ -14,10 +14,12 @@ public class Game {
     private Graphics graphics;
     private Window window;
     public Game(Window window, Graphics graphics) {
+
         this.graphics = graphics;
         this.window = window;
 
     }
+
 
     public void run(){
 
