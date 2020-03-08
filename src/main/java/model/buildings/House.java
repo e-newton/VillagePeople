@@ -58,6 +58,9 @@ public class House extends Building{
     public void use(Person p) {
         if(occupants.contains(p)){
             p.sleep();
+            if(p.getEnergy() > Person.FULLY_RESTED_ENERGY_LEVEL){
+                p.setActionToDone();
+            }
         }
     }
 }

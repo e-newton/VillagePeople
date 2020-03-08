@@ -72,5 +72,6 @@ public class Farm extends Building{
     @Override
     public void use(Person p) {
         p.addFoodToInventory(produceFood());
+        p.setActionToDone();
     }
 }

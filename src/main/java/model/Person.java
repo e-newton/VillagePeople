@@ -8,8 +8,10 @@ import model.resources.Food;
 import model.resources.FoodTypes;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Person extends GridMovingObject {
+    public static final int FULLY_RESTED_ENERGY_LEVEL = 1000;
     public static final int MAX_INVENTORY = 5;
     public static final float RADIUS = 5f;
     private Farm farm;
@@ -20,6 +22,7 @@ public class Person extends GridMovingObject {
     private int energy = 1000;
     private boolean isSleeping = false;
     private String name;
+    private Action action;
     private GridMovingObject gridMovingObject;
 
     public Person(String name, GridSquare position, Color colour){
@@ -78,14 +81,22 @@ public class Person extends GridMovingObject {
     }
 
     public void step(){
-
-        think();
+        searchForBuildings();
+        findNextAction();
+        performAction();
+        moveToAction();
         move();
         energy--;
 
     }
 
-    public void think(){
+
+    public void wander(){
+        Random r = new Random();
+        moveTo(position.getNeighbors().get(r.nextInt(position.getNeighbors().size())));
+    }
+
+    public void searchForBuildings(){
         if(house == null){
             GridSquare gridWithBuilding = findClosestBuilding(new House());
             if(gridWithBuilding != null){
@@ -93,41 +104,63 @@ public class Person extends GridMovingObject {
                 h.addOccupant(this);
             }
         }
-
-        if(isSleeping && energy >= 1000){
-            isSleeping = false;
-        }
-
-        if(destination == position || isSleeping){
-            position.getBuilding().use(this);
-        }
-
-        if(this.farm == null){
+        if(farm == null){
             GridSquare gridWithBuilding = findClosestBuilding(new Farm(FoodTypes.APPLE));
             if(gridWithBuilding != null){
                 Farm farm = (Farm) gridWithBuilding.getBuilding();
                 farm.setWorker(this);
             }
         }
-        if(energy < 300 && house != null){
-            destinationBuilding = house;
-            moveTo(house.getGridSquare());
-            return;
+    }
 
-        }
-
-        if(inventory == null && farm != null) {
-            moveTo(farm.getGridSquare());
-
-        } else if (inventory != null){
-            GridSquare gridWithBuilding = findClosestBuilding(new Granary());
-            if(gridWithBuilding != null){
-                destinationBuilding = gridWithBuilding.getBuilding();
-                moveTo(gridWithBuilding);
+    public void findNextAction(){
+        if (action == null) {
+            if(energy <= 300 && house != null){
+                action = new Action(house, "Go to sleep",this);
+            } else if (inventory != null){
+                GridSquare granary = findClosestBuilding(new Granary());
+                if(granary != null){
+                    action = new Action(granary.getBuilding(),"Deliver food to nearest granary",this);
+                }
+            }   else if (farm != null){
+                action = new Action(farm,"Going to farm for food",this);
             }
         }
 
+
     }
+
+    public void setActionToDone(){
+        this.action.setDone(true);
+    }
+
+    public boolean isAtActionBuilding(){
+        return this.position.equals(action.getBuilding().getGridSquare());
+    }
+
+    public void moveToAction(){
+        if(action != null){
+            moveTo(action.getBuilding().getGridSquare());
+        } else{
+            wander();
+        }
+    }
+
+    public void performAction(){
+        if(action == null){
+            findNextAction();
+            return;
+        }
+        if(isAtActionBuilding()){
+            action.performAction();
+        }
+        if(action.isDone()){
+            action = null;
+            findNextAction();
+        }
+
+    }
+
 
     public void die(){
         stop();
@@ -138,9 +171,7 @@ public class Person extends GridMovingObject {
     }
 
     public void sleep(){
-        isSleeping = true;
-        destination = house.getGridSquare();
-        this.energy += 5;
+        this.energy += 3;
     }
 
     public void setFarm(Farm farm) {
@@ -183,6 +214,10 @@ public class Person extends GridMovingObject {
         }
 
 
+    }
+
+    public int getEnergy() {
+        return energy;
     }
 
     public void moveTo(GridSquare destination){

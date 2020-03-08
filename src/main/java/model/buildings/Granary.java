@@ -74,6 +74,7 @@ public class Granary extends Building{
     @Override
     public void use(Person p) {
         addFood(p.removeFoodFromInventory());
+        p.setActionToDone();
         System.out.println("Granary: " +  inventory);
     }
 
