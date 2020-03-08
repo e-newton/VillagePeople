@@ -132,6 +132,7 @@ public class Person extends GridMovingObject {
 
     public void setActionToDone(){
         this.action.setDone(true);
+        System.out.println();
     }
 
     public boolean isAtActionBuilding(){
